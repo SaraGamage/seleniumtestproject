@@ -1,0 +1,21 @@
+{
+  "id": "8f7a74bc-80b5-4104-8869-50a3ac376e38",
+  "version": "2.0",
+  "name": "ExperimentsWithDataLab",
+  "url": "",
+  "tests": [{
+    "id": "db3dee78-77a9-4e2b-bfe8-527ca3288745",
+    "name": "Untitled",
+    "commands": []
+  }],
+  "suites": [{
+    "id": "690fd58c-c951-40b8-a712-bbec7ca82c8e",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["db3dee78-77a9-4e2b-bfe8-527ca3288745"]
+  }],
+  "urls": [],
+  "plugins": []
+}
