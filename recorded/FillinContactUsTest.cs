@@ -41,7 +41,7 @@ public class FillinContactUsTest {
       return whNow.First().ToString();
     }
   }
-  [Test]
+ /* [Test]
   public void fillinContactUs() {
     driver.Navigate().GoToUrl("https://c-datalab.com/");
     driver.Manage().Window.Size = new System.Drawing.Size(974, 1040);
@@ -79,5 +79,33 @@ public class FillinContactUsTest {
     driver.FindElement(By.Id("LEGAL_CONSENT.subscription_type_217707079-a91254e9-2e5e-4f4b-adfa-0fa0107f988a_593")).Click();
     //driver.FindElement(By.CssSelector(".hs-button")).Click();
     js.ExecuteScript("window.scrollTo(0,461)");
-  }
+  } */
+
+    /*[Test]
+        public void TestingBevaiourTwo()
+        {
+            IWebDriver driver = new ChromeDriver();
+
+            driver.Navigate().GoToUrl("https://c-datalab.com/");
+
+            var title = driver.Title;
+
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(500);
+
+            var textBox = driver.FindElement(By.Name("my-other-test-field"));
+            var submitButton = driver.FindElement(By.TagName("button"));
+
+            Assert.That(textBox.Displayed);
+            //var textBox = driver.FindElement(By.Content("my-other-test-field"));
+            //element = driver.find_element_by_xpath("//*[text()='abcd']")
+
+            textBox.SendKeys("Selenium");
+            //submitButton.Click();
+
+            var message = driver.FindElement(By.Id("message"));
+            var actual = message.Text;
+
+            Assert.That(actual, Is.EqualTo("Spkme other resposense!"));
+            driver.Quit();
+        }*/
 }

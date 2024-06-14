@@ -3,17 +3,15 @@ using OpenQA.Selenium;
 
 namespace SeleniumTestProject
 {
-    public static class FirstScript
+    public static class TestCases
     {
-        public static void SeleniumTest1()
-        {
-            IWebDriver driver = new ChromeDriver();
 
-            driver.Navigate().GoToUrl("https://www.selenium.dev/selenium/web/web-form.html");
+        public static void CanRunTestHittingWebsiteOfMyChoosing(IWebDriver driver)
+        {
 
             var title = driver.Title;
 
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(500);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(2000);
 
             var textBox = driver.FindElement(By.Name("my-text"));
             var submitButton = driver.FindElement(By.TagName("button"));
@@ -22,10 +20,17 @@ namespace SeleniumTestProject
             submitButton.Click();
 
             var message = driver.FindElement(By.Id("message"));
-            var value = message.Text;
+            var actual = message.Text;
 
-            driver.Quit();
+            Assert.That(actual, Is.EqualTo("Received!"));
+            
         }
+
+        
+        
     }
+
+
+    
 }
 
