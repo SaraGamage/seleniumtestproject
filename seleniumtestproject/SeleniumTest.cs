@@ -18,10 +18,7 @@ namespace SeleniumTestProject
             vars = new Dictionary<string, object>();
         }
         [TearDown]
-        protected void TearDown()
-        {
-            driver.Quit();
-        }
+        protected void TearDown() => driver?.Quit();
 
         public string waitForWindow(int timeout)
         {
