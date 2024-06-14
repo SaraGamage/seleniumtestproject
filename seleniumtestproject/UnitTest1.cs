@@ -13,7 +13,7 @@ namespace SeleniumTestProject
         [Test]
         public void Test1()
         {
-            //strange approach?
+            //strange approach??
             FirstScript.SeleniumTest1();
             Assert.Pass();
         }
