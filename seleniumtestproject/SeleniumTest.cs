@@ -1,5 +1,9 @@
-using OpenQA.Selenium.Chrome;
+
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using WebDriverManager;
+using WebDriverManager.DriverConfigs.Impl;
+
 
 namespace SeleniumTestProject
 {
@@ -12,16 +16,15 @@ namespace SeleniumTestProject
         [SetUp]
         public void SetUp()
         {
-            driver = new ChromeDriver();
+            var chromeOptions = new ChromeOptions();
+            chromeOptions.AddArguments("--headless");
+            driver = new ChromeDriver(chromeOptions);
             
             js = (IJavaScriptExecutor)driver;
             vars = new Dictionary<string, object>();
         }
         [TearDown]
-        protected void TearDown()
-        {
-            driver.Quit();
-        }
+        protected void TearDown() => driver?.Quit();
 
         public string waitForWindow(int timeout)
         {
