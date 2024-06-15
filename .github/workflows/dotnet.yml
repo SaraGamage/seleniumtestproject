@@ -26,22 +26,21 @@ jobs:
       run: dotnet build --no-restore
     - name: Test and Reporting
       run: |
-        echo "npm install testmo"
+        echo "date +'%Y%m%d %H:%M'" + "-Github Action Test Run" >> $run_name
         npm ci 
         npm install --no-save @testmo/testmo-cli
-        echo "now calling the testmo API"
         npx testmo automation:run:submit \
             --instance "$TESTMO_URL" \
             --project-id 1 \
-            --name "Github Action Test Run Results" \
+            --name $run_name \
             --source "ga-selenium-run" \
-            --results **/*test*.xml \
-            -- dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=testoutput.xml"
-        ls -LR
+            --results ga-selenium-test-output.xml \
+            -- dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
       env:
         TESTMO_URL: ${{ vars.TESTMO_URL }}
         TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
 
 
 # The --package-lock-only argument will only update the package-lock.json, instead of checking node_modules and downloading dependencies.
-# date +'%Y%m%d %H:%M'
+# 
+# **/*test*.xml \
