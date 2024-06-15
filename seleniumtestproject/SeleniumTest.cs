@@ -18,6 +18,9 @@ namespace SeleniumTestProject
         {
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArguments("--headless");
+            chromeOptions.AddArguments("--verbose"); 
+            chromeOptions.AddArguments("--output-directory=results"); 
+
             driver = new ChromeDriver(chromeOptions);
             
             js = (IJavaScriptExecutor)driver;
