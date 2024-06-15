@@ -26,7 +26,8 @@ jobs:
       run: dotnet build --no-restore
     - name: Test and Reporting
       run: |
-        echo "date +'%Y%m%d %H:%M'" + "-Github Action Test Run" >> $run_name
+        echo "date +'%Y%m%d %H:%M'" >> $run_stamp
+        $run_name = "$run_stamp-Github Action Test Run"
         npm ci 
         npm install --no-save @testmo/testmo-cli
         npx testmo automation:run:submit \
