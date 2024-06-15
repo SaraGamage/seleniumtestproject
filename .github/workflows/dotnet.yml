@@ -41,7 +41,7 @@ jobs:
             --project-id 1 \
             --name "Github Action Test Run Results" \
             --source "ga-selenium-run" \
-            --results results/*.xml 
+            --results ./seleniumtestproject/bin/Debug/net8.0/results/*.xml 
                 
       env:
         TESTMO_URL: ${{ vars.TESTMO_URL }}
@@ -51,3 +51,5 @@ jobs:
 # The --package-lock-only argument will only update the package-lock.json, instead of checking node_modules and downloading dependencies.
 # -- npm run mocha-junit # Note space after --
 # dotnet test --no-build --verbosity normal
+# /home/runner/work/seleniumtestproject/seleniumtestproject
+# /home/runner/work/seleniumtestproject/seleniumtestproject/seleniumtestproject/bin/Debug/net8.0/results/SeleniumTestProject.xml
