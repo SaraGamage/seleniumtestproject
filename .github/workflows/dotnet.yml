@@ -27,12 +27,9 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal \
-    - name: PreTestSetup
-      run: |
-        npm install --package-lock-only
-        npm ci
     - name: TestReporting
       run: | 
+        rm package-lock.json
         npm ci 
         npm install --no-save @testmo/testmo-cli
         npx testmo automation:run:submit \
