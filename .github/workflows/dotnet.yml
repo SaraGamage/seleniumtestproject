@@ -38,8 +38,8 @@ jobs:
             --project-id 1 \
             --name "Github Action Test Run Results" \
             --source "ga-selenium-run" \
-            --results **/*Test*.xml \
-            -- dotnet test --no-build --verbosity normal -- NUnit.TestOutputXml=results
+            --results **/*.xml \
+            -- dotnet test --no-build --verbosity normal --logger:"trx;LogFilePath=results/test-results.xml"
 
       env:
         TESTMO_URL: ${{ vars.TESTMO_URL }}
