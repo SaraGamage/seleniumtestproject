@@ -26,7 +26,7 @@ jobs:
       run: dotnet build --no-restore
     - name: Test and Reporting
       run: |
-        dotnet test --no-build --verbosity normal
+        
         echo "now setting up testmo"
         npm ci 
         npm install --no-save @testmo/testmo-cli
@@ -36,7 +36,8 @@ jobs:
             --project-id 1 \
             --name "Github Action Test Run Results" \
             --source "ga-selenium-run" \
-            --results seleniumtestproject/results/*.xml
+            --results results/*.xml \
+            -- dotnet test --no-build --verbosity normal
             
       env:
         TESTMO_URL: ${{ vars.TESTMO_URL }}
@@ -45,3 +46,4 @@ jobs:
 
 # The --package-lock-only argument will only update the package-lock.json, instead of checking node_modules and downloading dependencies.
 # -- npm run mocha-junit # Note space after --
+# dotnet test --no-build --verbosity normal
