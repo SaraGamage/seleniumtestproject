@@ -35,7 +35,7 @@ jobs:
             --project-id 1 \
             --name "Github Action Test Run Results" \
             --source "ga-selenium-run" \
-            --results **/*.xml \
+            --results **/*test*.xml \
             -- dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=testoutput.xml"
         ls -LR
       env:
