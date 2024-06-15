@@ -34,7 +34,7 @@ jobs:
         npx testmo automation:run:submit \
             --instance "$TESTMO_URL" \
             --project-id 1 \
-            --name "Test Project Run" \
+            --name "Github Action Test Run Results" \
             --source "unit-tests" \
             --results seleniumtestproject/results/*.xml 
             
