@@ -39,5 +39,5 @@ jobs:
             --results results/*.xml \
             -- npm run mocha-junit # Note space after --
       env:
-        TESTMO_URL: ${{ secrets.TESTMO_URL }}
-        TESTMO_TOKEN: ${{ variables.TESTMO_TOKEN }}
+        TESTMO_URL: ${{ vars.TESTMO_URL }}
+        TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
