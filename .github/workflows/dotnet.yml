@@ -26,9 +26,11 @@ jobs:
       run: dotnet build --no-restore
     - name: Test and Reporting
       run: |
-        dotnet test --no-build --verbosity normal  
+        dotnet test --no-build --verbosity normal
+        echo "now setting up testmo"
         npm ci 
         npm install --no-save @testmo/testmo-cli
+        echo "now calling the testmo API"
         npx testmo automation:run:submit \
             --instance "$TESTMO_URL" \
             --project-id 1 \
