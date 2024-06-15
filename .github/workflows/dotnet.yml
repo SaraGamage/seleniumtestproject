@@ -33,6 +33,8 @@ jobs:
         echo "now setting up testmo"
         npm ci 
         npm install --no-save @testmo/testmo-cli
+        echo "pwd"
+        pwd
         echo "now calling the testmo API"
         npx testmo automation:run:submit \
             --instance "$TESTMO_URL" \
