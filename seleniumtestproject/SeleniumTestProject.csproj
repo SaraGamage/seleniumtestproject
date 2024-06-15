@@ -20,10 +20,4 @@
     <PackageReference Include="WebDriverManager" Version="2.17.2" />
   </ItemGroup>
 
-  <RunSettings>
-    <NUnit>
-        <TestOutputXml>..\TestResults</TestOutputXml>
-    </NUnit>
-  </RunSettings>
-
 </Project>
