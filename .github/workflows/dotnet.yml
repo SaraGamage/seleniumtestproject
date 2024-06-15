@@ -26,7 +26,12 @@ jobs:
       run: dotnet build --no-restore
     - name: Test and Reporting
       run: |
+        dotnet test --no-build --verbosity normal -- NUnit.TestOutputXml=results  
         echo "now setting up testmo"
+        mkdir xml-results
+        cp /home/runner/work/seleniumtestproject/seleniumtestproject/seleniumtestproject/bin/Debug/net8.0/results/*.xml ./xml-results
+
+        ls -LR
         npm ci 
         npm install --no-save @testmo/testmo-cli
         echo "pwd"
@@ -37,11 +42,7 @@ jobs:
             --project-id 1 \
             --name "Github Action Test Run Results" \
             --source "ga-selenium-run" \
-            --results /home/runner/work/seleniumtestproject/seleniumtestproject/seleniumtestproject/bin/Debug/net8.0/results/*.xml \
-            -- dotnet test --no-build --verbosity normal -- NUnit.TestOutputXml=results               
-           
-        echo "after posting: =======LS: "
-        ls -LR
+            --results xml-results/*.xml
 
       env:
         TESTMO_URL: ${{ vars.TESTMO_URL }}
@@ -56,5 +57,6 @@ jobs:
 # ls -LR
 # /home/runner/work/seleniumtestproject/seleniumtestproject
 # /home/runner/work/seleniumtestproject/seleniumtestproject
+# /home/runner/work/seleniumtestproject/seleniumtestproject/seleniumtestproject/bin/Debug/net8.0/results/SeleniumTestProject.xml
 # /home/runner/work/seleniumtestproject/seleniumtestproject/seleniumtestproject/bin/Debug/net8.0/results/SeleniumTestProject.xml
 # /home/runner/work/seleniumtestproject/seleniumtestproject/seleniumtestproject/bin/Debug/net8.0/results/SeleniumTestProject.xml
