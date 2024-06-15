@@ -39,7 +39,7 @@ jobs:
             --project-id 1 \
             --name "Github Action Test Run Results" \
             --source "ga-selenium-run" \
-            --results results/*.xml 
+            --results /bin/Debug/net8.0/results/*.xml 
                 
       env:
         TESTMO_URL: ${{ vars.TESTMO_URL }}
