@@ -29,7 +29,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal \
     - name: TestReporting
       run: | 
-        rm package-lock.json
+        npm install --package-lock-only
         npm ci 
         npm install --no-save @testmo/testmo-cli
         npx testmo automation:run:submit \
@@ -42,3 +42,6 @@ jobs:
       env:
         TESTMO_URL: ${{ vars.TESTMO_URL }}
         TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
+
+
+# The --package-lock-only argument will only update the package-lock.json, instead of checking node_modules and downloading dependencies.
