@@ -27,6 +27,9 @@ jobs:
     - name: Test and Reporting
       run: |
         dotnet test --no-build --verbosity normal
+        echo "=======LS: "
+        ls -LR
+
         echo "now setting up testmo"
         npm ci 
         npm install --no-save @testmo/testmo-cli
