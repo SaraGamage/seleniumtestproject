@@ -20,9 +20,24 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+        node-version: 20
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal \
+    - name: TestReporting
+      run: | 
+        npm ci 
+        npm install --no-save @testmo/testmo-cli
+        npx testmo automation:run:submit \
+            --instance "$TESTMO_URL" \
+            --project-id 1 \
+            --name "Mocha test run" \
+            --source "unit-tests" \
+            --results results/*.xml \
+            -- npm run mocha-junit # Note space after --
+      env:
+        TESTMO_URL: ${{ secrets.TESTMO_URL }}
+        TESTMO_TOKEN: ${{ variables.TESTMO_TOKEN }}
