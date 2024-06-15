@@ -26,13 +26,13 @@ jobs:
       run: dotnet build --no-restore
     - name: Test and Reporting
       run: |
-        echo date +'%Y%m%d-%H:%M-Github Action Test Run' >> $run_name
+        echo `date +'%Y%m%d-%H:%M-Github Action Test Run'` >> $RUN_NAME
         npm ci 
         npm install --no-save @testmo/testmo-cli
         npx testmo automation:run:submit \
             --instance "$TESTMO_URL" \
             --project-id 1 \
-            --name $run_name \
+            --name $RUN_NAME \
             --source "ga-selenium" \
             --results ga-selenium-test-output.xml \
             -- dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
