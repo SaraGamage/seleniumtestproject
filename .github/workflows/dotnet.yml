@@ -20,6 +20,8 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+    - name: Generate Run Name
+      run: echo date=$(TZ=':Australia/Melbourne' date '%Y%m%d-%H:%M') >> $RUN_NAME
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
