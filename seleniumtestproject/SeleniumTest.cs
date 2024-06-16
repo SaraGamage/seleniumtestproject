@@ -51,7 +51,7 @@ namespace SeleniumTestProject
             }
         }
 
-        [Test]
+        [Test, Description("Can load page")]
         public void Test01()
         {
             driver.Navigate().GoToUrl("https://www.selenium.dev/selenium/web/web-form.html");
@@ -60,7 +60,7 @@ namespace SeleniumTestProject
             Assert.Pass();
         }
 
-        [Test]
+        [Test, Description("Submit google search")]
         public void Test02()
         {
             // 2. Navigate to the URL
@@ -82,19 +82,19 @@ namespace SeleniumTestProject
 
         }
 
-        [Test]
+        [Test, Description("Always passes")]
         public void Test03()
         {
             Assert.That(true);
         }
 
-        [Test]
+        [Test, Description("Always passes")]
         public void Test04()
         {
             Assert.That(true);
         }
 
-        [Test]
+        [Test, Description("Slow test")]
         public void SlowTest()
         {
             Thread.Sleep(22000);
