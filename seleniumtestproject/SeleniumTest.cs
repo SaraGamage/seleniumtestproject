@@ -51,7 +51,7 @@ namespace SeleniumTestProject
             }
         }
 
-        [Test]
+        [Test, Name("Basic Test 1"), Category("A.A")]
         public void Test01()
         {
             driver.Navigate().GoToUrl("https://www.selenium.dev/selenium/web/web-form.html");
@@ -60,7 +60,7 @@ namespace SeleniumTestProject
             Assert.Pass();
         }
 
-        [Test]
+        [Test, Name("Basic Test 2"), Category("A.A")]
         public void Test02()
         {
             // 2. Navigate to the URL
@@ -82,24 +82,23 @@ namespace SeleniumTestProject
 
         }
 
-        [Test]
-        public void SlowTest()
-        {
-            Thread.Sleep(2000);
-            Assert.That(true);
-        }
-
-        [Test]
+        [Test, Name("Basic Test 3"), Category("A.A")]
         public void Test03()
         {
             Assert.That(true);
         }
 
-        [Test]
+        [Test, Name("Basic Test 4"), Category("A.A")]
         public void Test04()
         {
             Assert.That(true);
         }
 
+        [Test, Name("Slowest Test"), Category("A.B")]
+        public void SlowTest()
+        {
+            Thread.Sleep(22000);
+            Assert.That(true);
+        }
     }
 }
