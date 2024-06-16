@@ -21,14 +21,14 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Generate Run Name
-      run: echo date=$(TZ=':Australia/Melbourne' date+'%Y%m%d-%H:%M') >> $RUN_NAME
+      run: echo date=$(TZ=':Australia/Melbourne' date '%Y%m%d-%H:%M') >> $RUN_NAME
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
     - name: Test and Reporting
       run: |
-        
+        RUN_NAME=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Github Actions Run')
         npm ci 
         npm install --no-save @testmo/testmo-cli
         npx testmo automation:run:submit \
@@ -46,4 +46,3 @@ jobs:
 # The --package-lock-only argument will only update the package-lock.json, instead of checking node_modules and downloading dependencies.
 # 
 # **/*test*.xml \
-# echo `date +'%Y%m%d-%H:%M-Github Action Test Run'` >> $RUN_NAME
