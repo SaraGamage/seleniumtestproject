@@ -85,7 +85,7 @@ namespace SeleniumTestProject
         [Test]
         public void SlowTest()
         {
-            Thread.Sleep(22000);
+            Thread.Sleep(2000);
             Assert.That(true);
         }
 
