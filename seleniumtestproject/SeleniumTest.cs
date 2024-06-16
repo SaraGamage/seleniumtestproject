@@ -85,7 +85,7 @@ namespace SeleniumTestProject
         [Test]
         public void Test03()
         {
-            Assert.That(true);
+            Assert.That(fail);
         }
 
     }
