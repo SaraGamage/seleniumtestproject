@@ -32,7 +32,7 @@ jobs:
         npx testmo automation:run:submit \
             --instance "$TESTMO_URL" \
             --project-id 1 \
-            --name $RUN_NAME \
+            --name "$RUN_NAME" \
             --source "ga-selenium" \
             --results ga-selenium-test-output.xml \
             -- dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
