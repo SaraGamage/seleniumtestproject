@@ -94,6 +94,12 @@ namespace SeleniumTestProject
             Assert.That(true);
         }
 
+        [Test, Description("Always passes")]
+        public void Test05()
+        {
+            Assert.That(true);
+        }
+
         [Test, Description("Slow test")]
         public void SlowTest()
         {
