@@ -20,7 +20,7 @@ namespace SeleniumTestProject
             chromeOptions.AddArguments("--headless");
             chromeOptions.AddArguments("--verbose"); 
             //chromeOptions.AddArguments("--output-directory=results");
-
+            //new diver created
             driver = new ChromeDriver(chromeOptions);
             
             js = (IJavaScriptExecutor)driver;
