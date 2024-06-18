@@ -54,6 +54,7 @@ namespace SeleniumTestProject
         [Test, Description("Can load page")]
         public void Test01()
         {
+            //this is a test
             driver.Navigate().GoToUrl("https://www.selenium.dev/selenium/web/web-form.html");
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(2000);
             TestCases.CanRunTestHittingWebsiteOfMyChoosing(driver);
