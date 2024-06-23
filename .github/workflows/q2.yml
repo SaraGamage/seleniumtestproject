@@ -53,10 +53,14 @@ jobs:
         env:
           QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Run Tests
+        run: |
+          dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=~/ga-selenium-test-output.xml"
+          ls -R *.xml
+      - name: Upload Report
+        uses: actions/upload-artifact@v3
+        if: always()
         with:
-          node-version: ${{ matrix.node-version }}
-          dotnet-version: 8.0.x
-      - run: npm ci
-      - run: dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
+          name: ga-selenium-test-output
+          path: ~/
+          retention-days: 30
