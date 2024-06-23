@@ -54,10 +54,24 @@ jobs:
       - uses: qase-tms/qase-link-run@main
         env:
           QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
-      - name: Upload Report
-        uses: actions/upload-artifact@v3
-        if: always()
+
+      - uses: qase-tms/gh-actions/report@v1
+        id: report
         with:
-          name: GA-Test-Results
+          token: ${{ secrets.QASE_API_TOKEN }}
+          project: TM
+          # create a test run using qase-tms/gh-actions/run-create
+          id: 103
+          format: junit
           path: ./seleniumtestproject/ga-selenium-test-output.xml
-          retention-days: 30
+          batch: 100
+# ${{ steps.qase-run-create.outputs.id }}
+# - name: Upload Report
+#   uses: actions/upload-artifact@v3
+#   if: always()
+#   with:
+#     name: GA-Test-Results
+#     path: ./seleniumtestproject/ga-selenium-test-output.xml
+#     retention-days: 30
+
+# https://github.com/qase-tms/gh-actions/blob/main/report/README.md
