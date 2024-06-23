@@ -56,6 +56,10 @@ jobs:
           cd /home/runner/work/seleniumtestproject/seleniumtestproject
           ls -R
           echo "^^^&^^^"
+          echo "readlink"
+          readlink -f ga-output.xml
+          echo "^^^&^^^"
+
       - uses: qase-tms/qase-link-run@main
         env:
           QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
