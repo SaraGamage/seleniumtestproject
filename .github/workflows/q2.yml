@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [20.x]
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -62,5 +62,5 @@ jobs:
         if: always()
         with:
           name: ga-selenium-test-output
-          path: ~/
+          path: /
           retention-days: 30

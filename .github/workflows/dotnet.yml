@@ -23,7 +23,10 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: |
+        dotnet build --no-restore
+        dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-selenium-test-output.xml
+        ls -R *.xml
     - name: Test and Reporting
       run: |
         RUN_NAME=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Github Actions Run')
