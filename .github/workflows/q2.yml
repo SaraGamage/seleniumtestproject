@@ -51,14 +51,13 @@ jobs:
         run: |
           dotnet build --no-restore
           dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
-          ls -R
-      #- uses: qase-tms/qase-link-run@main
-      #  env:
-      #    QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
-      # - name: Upload Report
-      #   uses: actions/upload-artifact@v3
-      #   if: always()
-      #   with:
-      #     name: ga-selenium-test-output
-      #     path: /
-      #     retention-days: 30
+      - uses: qase-tms/qase-link-run@main
+        env:
+          QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
+      - name: Upload Report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: GA-Test-Results
+          path: ./seleniumtestproject/ga-selenium-test-output.xml
+          retention-days: 30
