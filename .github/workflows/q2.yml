@@ -51,11 +51,7 @@ jobs:
         run: |
           dotnet build --no-restore
           dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-output.xml"
-          ls -R 
           echo "=$=$=$=$="
-          cd /home/runner/work/seleniumtestproject/seleniumtestproject
-          ls -R
-          echo "^^^&^^^"
           echo "readlink"
           readlink -f ga-output.xml
           echo "^^^&^^^"
@@ -74,6 +70,7 @@ jobs:
           format: junit
           path: /home/runner/work/seleniumtestproject/seleniumtestproject/ga-output.xml
           batch: 100
+          verbose: true
 # ${{ steps.qase-run-create.outputs.id }}
 # - name: Upload Report
 #   uses: actions/upload-artifact@v3
