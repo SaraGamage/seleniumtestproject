@@ -72,7 +72,7 @@ jobs:
           # create a test run using qase-tms/gh-actions/run-create
           id: ${{ env.QASE_RUN_ID }}
           format: junit
-          path: ./ga-output.xml
+          path: /home/runner/work/seleniumtestproject/seleniumtestproject/ga-output.xml
           batch: 100
 # ${{ steps.qase-run-create.outputs.id }}
 # - name: Upload Report
