@@ -1,4 +1,4 @@
-name: Run tests
+name: Qase Sample
 
 on:
   workflow_dispatch:
@@ -28,7 +28,7 @@ env:
   QASE_API_TOKEN: ${{ secrets.QASE_API_TOKEN }}
 
 jobs:
-  build-js:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
