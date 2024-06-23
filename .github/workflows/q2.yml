@@ -51,6 +51,11 @@ jobs:
         run: |
           dotnet build --no-restore
           dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-output.xml"
+          ls -R 
+          echo "=$=$=$=$="
+          cd /home/runner/work/seleniumtestproject/seleniumtestproject
+          ls -R
+          echo "^^^&^^^"
       - uses: qase-tms/qase-link-run@main
         env:
           QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
