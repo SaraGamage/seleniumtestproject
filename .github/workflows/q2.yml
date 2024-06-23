@@ -1,6 +1,11 @@
 name: Qase Sample
 
 on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
   workflow_dispatch:
     inputs:
       qase_api_base_url:
@@ -26,6 +31,7 @@ env:
   QASE_RUN_ID: ${{ inputs.qase_run_id }}
   QASE_RUN_COMPLETE: ${{ inputs.qase_run_complete }}
   QASE_API_TOKEN: ${{ secrets.QASE_API_TOKEN }}
+
 
 jobs:
   build:
