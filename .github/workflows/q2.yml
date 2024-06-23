@@ -50,7 +50,7 @@ jobs:
       - name: Build & Test
         run: |
           dotnet build --no-restore
-          dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
+          dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-output.xml"
       - uses: qase-tms/qase-link-run@main
         env:
           QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
@@ -63,7 +63,7 @@ jobs:
           # create a test run using qase-tms/gh-actions/run-create
           id: ${{ env.QASE_RUN_ID }}
           format: junit
-          path: /home/runner/work/seleniumtestproject/seleniumtestproject/ga-selenium-test-output.xml
+          path: ga-output.xml
           batch: 100
 # ${{ steps.qase-run-create.outputs.id }}
 # - name: Upload Report
@@ -71,7 +71,7 @@ jobs:
 #   if: always()
 #   with:
 #     name: GA-Test-Results
-#     path: ./seleniumtestproject/ga-selenium-test-output.xml
+#     path: ./seleniumtestproject/ga-output.xml
 #     retention-days: 30
 
 # https://github.com/qase-tms/gh-actions/blob/main/report/README.md
