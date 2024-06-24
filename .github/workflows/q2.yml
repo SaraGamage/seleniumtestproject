@@ -47,30 +47,27 @@ jobs:
             dotnet-version: 8.0.x
       - name: Restore dependencies
         run: dotnet restore
-      - name: Build & Test
+      - name: Build & Test & qli
         run: |
           dotnet build --no-restore
           dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-output.xml"
-          echo "=$=$=$=$="
-          echo "readlink"
-          readlink -f ga-output.xml
-          echo "^^^&^^^"
+          tools/qli testops result upload -t "${{ secrets.QASE_API_TOKEN }}" -p "TM" --id "10" --format "junit" --path "./ga-output.xml" --batch "100" --verbose
 
       - uses: qase-tms/qase-link-run@main
         env:
           QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
 
-      - uses: qase-tms/gh-actions/report@v1
-        id: report
-        with:
-          token: ${{ secrets.QASE_API_TOKEN }}
-          project: TM
-          # create a test run using qase-tms/gh-actions/run-create
-          id: ${{ env.QASE_RUN_ID }}
-          format: junit
-          path: /home/runner/work/seleniumtestproject/seleniumtestproject/ga-output.xml
-          batch: 100
-          verbose: true
+# - uses: qase-tms/gh-actions/report@v1
+#   id: report
+#   with:
+#     token: ${{ secrets.QASE_API_TOKEN }}
+#     project: TM
+#     # create a test run using qase-tms/gh-actions/run-create
+#     id: ${{ env.QASE_RUN_ID }}
+#     format: junit
+#     path: ga-output.xml
+#     batch: 100
+#     verbose: true
 # ${{ steps.qase-run-create.outputs.id }}
 # - name: Upload Report
 #   uses: actions/upload-artifact@v3
