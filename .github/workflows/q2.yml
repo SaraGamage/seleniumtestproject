@@ -52,7 +52,7 @@ jobs:
           dotnet build --no-restore
           dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=ga-output.xml"
           chmod +x tools/qli
-          tools/qli testops result upload -t "${{ secrets.QASE_API_TOKEN }}" -p "TM" --id "10" --format "junit" --path "./ga-output.xml" --batch "100" --verbose
+          tools/qli testops result upload -t "${{ secrets.QASE_API_TOKEN }}" -p "TM" --id "${{ env.QASE_RUN_ID }}" --format "junit" --path "./ga-output.xml" --batch "100" --verbose
 
       - uses: qase-tms/qase-link-run@main
         env:
