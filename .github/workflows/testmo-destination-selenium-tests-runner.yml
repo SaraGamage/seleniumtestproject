@@ -56,9 +56,9 @@ jobs:
       id: testmo_run_create
       run: |
         run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
-        
+
         ID=$(npx testmo automation:run:create \
-          --instance "$TESTMO_URL" \
+          --instance "${{ vars.TESTMO_URL }}" \
           --project-id 1 \
           --name "$run_name" \
           --source "selenium")
@@ -84,7 +84,7 @@ jobs:
         ## call into the testmo node executable, submit a run and the last line is the call to dotnet test (NOTE the space after -- and before `dotnet test`)
 
         npx testmo automation:run:submit-thread \
-          --instance "$TESTMO_URL" \
+          --instance "${{ vars.TESTMO_URL }}" \
           --run-id "${{ steps.testmo_run_decider.outputs.actual_run_id }} \
           --results ./seleniumtestproject/selenium-test-output.xml \
           -- dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=selenium-test-output.xml"
