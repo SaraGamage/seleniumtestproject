@@ -58,7 +58,7 @@ jobs:
         run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
 
         ID=$(npx testmo automation:run:create \
-          --instance "${{ vars.TESTMO_URL }}" \
+          --instance "$TESTMO_URL" \
           --project-id 1 \
           --name "$run_name" \
           --source "selenium")
@@ -71,27 +71,31 @@ jobs:
     - name: Decide which Testmo Run Id to use (as previous step may not have run)
       id: testmo_run_decider
       run: |
-        val_one=${{ inputs.testmo_run_id }}
-        val_two=${{ steps.testmo_run_create.outputs.testmo_run_id }}
+        suppliedRunId=${{ inputs.testmo_run_id }}
+        newlyCreatedRunId=${{ steps.testmo_run_create.outputs.testmo_run_id }}
         
-        if (( val_one > val_two )); then
-          echo "actual_run_id=$val_one" >> $GITHUB_OUTPUT
+        if (( suppliedRunId != -1 )); then
+          echo "actual_run_id=$suppliedRunId" >> $GITHUB_OUTPUT
         else
-          echo "actual_run_id=$val_two" >> $GITHUB_OUTPUT
+          echo "actual_run_id=$newlyCreatedRunId" >> $GITHUB_OUTPUT
         fi
+        
+        echo "actual_run_id: $actual_run_id"
         
     - name: Test and Reporting
       run: |
 
         ## npx is `Run a command from a local or remote npm package`
         ## call into the testmo node executable, submit a run and the last line is the call to dotnet test (NOTE the space after -- and before `dotnet test`)
+        echo "id: $RUN_ID"
 
         npx testmo automation:run:submit-thread \
-          --instance "${{ vars.TESTMO_URL }}" \
-          --run-id "${{ steps.testmo_run_decider.outputs.actual_run_id }}" \
+          --instance "$TESTMO_URL" \
+          --run-id "$RUN_ID" \
           --results ./seleniumtestproject/selenium-test-output.xml \
           -- dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=selenium-test-output.xml"
       env:
+        RUN_ID: ${{ steps.qase_run_decider.outputs.actual_run_id }}
         TESTMO_URL: ${{ vars.TESTMO_URL }}
         TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
 
