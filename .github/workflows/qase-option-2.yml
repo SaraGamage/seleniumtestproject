@@ -1,5 +1,4 @@
-name: Qase [Destination] TWO 2 2 2 
-# -- Selenium Project Run & Publish
+name: Qase [Destination] -- Selenium Project Run & Publish
 
 on:
   repository_dispatch:
