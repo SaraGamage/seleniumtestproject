@@ -74,12 +74,12 @@ jobs:
         suppliedRunId=${{ inputs.testmo_run_id }}
         newlyCreatedRunId=${{ steps.testmo_run_create.outputs.testmo_run_id }}
         
-        if (( suppliedRunId != -1 )); then
+        if (( $suppliedRunId != -1 )); then
           echo "actual_run_id=$suppliedRunId" >> $GITHUB_OUTPUT
         else
           echo "actual_run_id=$newlyCreatedRunId" >> $GITHUB_OUTPUT
         fi
-        
+
         echo "actual_run_id: $actual_run_id"
         
     - name: Test and Reporting
