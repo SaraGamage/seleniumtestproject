@@ -37,6 +37,7 @@ jobs:
       - uses: qase-tms/qase-link-run@v1
         env:
           QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
+
       - uses: actions/checkout@v4
 
       - name: Setup dotnet8.0.x
@@ -44,6 +45,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      - name: Restore & Build
+        run: |
+          dotnet restore
+          dotnet build --no-restore
+          
       - name: Run Selenium Tests
         run: dotnet test --no-build --verbosity normal --environment TEST_ENV="Development" --environment TEST_VER="latest-build" --logger:"junit;LogFilePath=qase-output.xml"
 
