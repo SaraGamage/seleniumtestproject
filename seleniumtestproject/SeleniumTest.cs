@@ -18,9 +18,9 @@ namespace SeleniumTestProject
         private string TestingEnvironment = "Development?";
         private string TestingVersionOrCommit = "Unknown";
         private bool IsProduction = false;
-
-        [SetUp]
-        public void SetUp()
+        
+        [OneTimeSetUp]
+        public void RunBeforeAnyTests()
         {
             TestingEnvironment = Environment.GetEnvironmentVariable("TEST_ENV");
             TestingVersionOrCommit = Environment.GetEnvironmentVariable("TEST_VER");
@@ -29,7 +29,11 @@ namespace SeleniumTestProject
             Console.WriteLine($"TestingVersionOrCommit {TestingVersionOrCommit}");
             Console.WriteLine($"-----------------------------------------------");
             IsProduction = TestingEnvironment.Equals("Production", StringComparison.CurrentCultureIgnoreCase);
+        }
 
+        [SetUp]
+        public void SetUp()
+        {
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArguments("--headless");
             chromeOptions.AddArguments("--verbose"); 
