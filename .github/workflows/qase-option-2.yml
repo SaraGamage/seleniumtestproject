@@ -48,7 +48,7 @@ jobs:
             file="**/*qase-output.xml"
             full_path=$(realpath "$file")
             echo "The full path is $full_path"
-            echo "result_xml_path=${{ full_path }}" >> $GITHUB_OUTPUT
+            echo "result_xml_path=$full_path" >> $GITHUB_OUTPUT
 
         - uses: qase-tms/gh-actions/report@v1
           id: report
