@@ -52,7 +52,7 @@ jobs:
             --name "$RUN_NAME" \
             --source "ga-selenium" \
             --results **/*selenium-test-output.xml \
-            -- dotnet test --no-build --verbosity normal --environment TEST_ENV ${{ inputs.env_name }}" --environment TEST_VER ${{ inputs.release_version }}" --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
+            -- dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
       env:
         TESTMO_URL: ${{ vars.TESTMO_URL }}
         TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}

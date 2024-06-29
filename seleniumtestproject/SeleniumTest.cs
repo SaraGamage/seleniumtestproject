@@ -1,4 +1,5 @@
 
+using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using WebDriverManager;
@@ -16,6 +17,7 @@ namespace SeleniumTestProject
 
         private string TestingEnvironment = "Development?";
         private string TestingVersionOrCommit = "Unknown";
+        private bool IsProduction = false;
 
         [SetUp]
         public void SetUp()
@@ -26,6 +28,7 @@ namespace SeleniumTestProject
             Console.WriteLine($"TestingEnvironment {TestingEnvironment}");
             Console.WriteLine($"TestingVersionOrCommit {TestingVersionOrCommit}");
             Console.WriteLine($"-----------------------------------------------");
+            IsProduction = TestingEnvironment.Equals("Production", StringComparison.CurrentCultureIgnoreCase);
 
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArguments("--headless");
@@ -113,10 +116,18 @@ namespace SeleniumTestProject
             Assert.That(true);
         }
 
-        [Test, Description("Slow test")]
-        public void SlowTest()
+        [Test, Description("A very specific test that needs to do 1 thing in dev, another in prod")]
+        public void TwoSecondTestOnDevHalfSecondOnProd()
         {
-            Thread.Sleep(22000);
+            if(IsProduction)
+            {
+                Console.WriteLine($"If Prod then we're going to not sleep as long");
+                Thread.Sleep(500);
+            }
+            else
+            {
+                Thread.Sleep(2000);
+            }
             Assert.That(true);
         }
     }
