@@ -45,7 +45,7 @@ jobs:
           id: test_run_output
           run: |
             dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=qase-output.xml"
-            file="**/*qase-output.xml"
+            file="qase-output.xml"
             full_path=$(realpath "$file")
             echo "The full path is $full_path"
             echo "result_xml_path=$full_path" >> $GITHUB_OUTPUT
