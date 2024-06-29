@@ -62,7 +62,7 @@ jobs:
             echo "------"
             echo "env_name: ${{ inputs.env_name }}
             echo "release_version: ${{ inputs.release_version }}
-            
+
         - uses: qase-tms/gh-actions/run-create@v1
           id: qase-run-create
           with:
@@ -72,7 +72,8 @@ jobs:
             description: |
               ${{ inputs.env_name }}
               ${{ inputs.release_version }}
-            environment: Development-HC
+            environment: dev
+            verbose: true
             #milestone: 123
             #plan: 321
 
@@ -85,6 +86,7 @@ jobs:
             format: junit
             path: ${{ steps.test_run_output.outputs.result_xml_path }}
             batch: 100
+            verbose: true
 
         # - uses: qase-tms/qase-link-run@v1
         #   env:
