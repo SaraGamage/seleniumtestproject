@@ -85,7 +85,3 @@ jobs:
             path: ./seleniumtestproject/qase-output.xml
             batch: 100
             verbose: true
-
-        # - uses: qase-tms/qase-link-run@v1
-        #   env:
-        #     QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
