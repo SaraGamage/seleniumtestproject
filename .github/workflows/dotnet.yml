@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       env_name:
-        description: 'Which environment we''re running in'
+        description: 'Which environment we are running in'
         default: 'Development'
         required: true
         type: string
@@ -36,7 +36,7 @@ jobs:
       run: dotnet build --no-restore
     - name: Test and Reporting
       run: |
-        echo we're working with ENV (env_name): ${{ inputs.env_name }}
+        echo "we are working on ENV (env_name): ${{ inputs.env_name }}"
         RUN_NAME=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Github Actions Run')
         npm ci 
         npm install --no-save @testmo/testmo-cli
