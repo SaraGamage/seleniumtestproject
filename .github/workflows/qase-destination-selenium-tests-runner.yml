@@ -45,22 +45,18 @@ jobs:
           run: |
             echo "we are working on ENV (env_name): ${{ inputs.env_name }}"
             echo "we are working with VER/SHA (release_version): ${{ inputs.release_version }}"
-            dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=qase-output.xml"
-            file="qase-output.xml"
-            full_path=$(realpath "$file")
-            echo "The full path is $full_path"
-            echo "result_xml_path=$full_path" >> $GITHUB_OUTPUT
+
+            dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=qase-output.xml"
+
             run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
             echo "run_name=$run_name" >> $GITHUB_OUTPUT
-
-        - name: Check what is happening
-          id: check_data
-          run: |
-            echo "runname: ${{ steps.test_run_output.outputs.run_name }}"
-            echo "result_xml_path: ${{ steps.test_run_output.outputs.result_xml_path }}"
-            echo "------"
-            echo "env_name: ${{ inputs.env_name }}
-            echo "release_version: ${{ inputs.release_version }}
+            
+            # setup Qase data
+            if [ "${{ inputs.env_name }}" = "Production" ]; then
+                echo "qase_env_slug=prod" >> $GITHUB_OUTPUT
+            else
+                echo "qase_env_slug=dev" >> $GITHUB_OUTPUT
+            fi 
 
         - uses: qase-tms/gh-actions/run-create@v1
           id: qase-run-create
@@ -71,7 +67,7 @@ jobs:
             description: |
               ${{ inputs.env_name }}
               ${{ inputs.release_version }}
-            environment: dev
+            environment: ${{ steps.test_run_output.outputs.qase_env_slug }}
             verbose: true
             #milestone: 123
             #plan: 321
