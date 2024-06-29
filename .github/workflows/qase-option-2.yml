@@ -77,7 +77,7 @@ jobs:
             #milestone: 123
             #plan: 321
 
-        - uses: qase-tms/gh-actions/report@v1
+        - uses: saragamage/qase-gh-actions/report@main
           id: qase-report
           with:
             token: ${{ secrets.QASE_API_TOKEN }}
