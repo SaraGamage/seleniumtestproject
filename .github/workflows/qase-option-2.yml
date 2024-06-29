@@ -44,18 +44,34 @@ jobs:
         - name: Run Selenium Tests [dotnet test] with XML output
           id: test_run_output
           run: |
+            echo "we are working on ENV (env_name): ${{ inputs.env_name }}"
+            echo "we are working with VER/SHA (release_version): ${{ inputs.release_version }}"
             dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=qase-output.xml"
             file="qase-output.xml"
             full_path=$(realpath "$file")
             echo "The full path is $full_path"
             echo "result_xml_path=$full_path" >> $GITHUB_OUTPUT
+            run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
+            echo "run_name=$run_name" >> $GITHUB_OUTPUT
+
+        - uses: qase-tms/gh-actions/run-create
+          id: qase-run-create
+          with:
+            token: ${{ secrets.QASE_API_TOKEN }}
+            project: TM
+            title: ${{ steps.branch_check.outputs.run_name }}
+            description: |
+              ${{ inputs.env_name }}
+              ${{ inputs.release_version }}
+            environment: Development-HC
+            #milestone: 123
+            #plan: 321
 
         - uses: qase-tms/gh-actions/report@v1
           id: report
           with:
             token: ${{ secrets.QASE_API_TOKEN }}
-            project: CODE
-            # create a test run using qase-tms/gh-actions/run-create
+            project: TM
             id: ${{ steps.qase-run-create.outputs.id }}
             format: junit
             path: ${{ steps.branch_check.outputs.result_xml_path }}
