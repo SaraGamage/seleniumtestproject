@@ -1,0 +1,66 @@
+name: Qase [Destination] TWO 2 2 2 
+# -- Selenium Project Run & Publish
+
+on:
+  repository_dispatch:
+    types: [trigger-workflow]
+  workflow_dispatch:
+    inputs:
+      env_name:
+        description: 'Which environment we are running in'
+        default: 'Development'
+        required: true
+        type: string
+      release_version:
+        description: '[semver] the build being tested (optional)'
+        default: '0.0.0'
+        required: false
+        type: string
+
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      strategy:
+        matrix:
+          node-version: [20.x]
+      steps:
+        - uses: actions/checkout@v4
+
+        - name: Setup dotnet8.0.x
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: 8.0.x
+
+        - name: Restore & Build
+          run: |
+              dotnet restore
+              dotnet build --no-restore
+        
+        - name: Run Selenium Tests [dotnet test] with XML output
+          id: test_run_output
+          run: |
+            dotnet test --no-build --verbosity normal --logger:"junit;LogFilePath=qase-output.xml"
+            file="**/*qase-output.xml"
+            full_path=$(realpath "$file")
+            echo "The full path is $full_path"
+            echo "result_xml_path=${{ full_path }}" >> $GITHUB_OUTPUT
+
+        - uses: qase-tms/gh-actions/report@v1
+          id: report
+          with:
+            token: ${{ secrets.QASE_API_TOKEN }}
+            project: CODE
+            # create a test run using qase-tms/gh-actions/run-create
+            id: ${{ steps.qase-run-create.outputs.id }}
+            format: junit
+            path: ${{ steps.branch_check.outputs.result_xml_path }}
+            batch: 100
+
+        # - uses: qase-tms/qase-link-run@main
+        #   env:
+        #     QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
