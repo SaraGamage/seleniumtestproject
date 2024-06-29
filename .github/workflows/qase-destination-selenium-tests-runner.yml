@@ -17,9 +17,9 @@ on:
         type: string
 
   push:
-    branches: [ "main", "sg/qase" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "sg/qase" ]
+    branches: [ "main" ]
 
 jobs:
     build:
