@@ -64,6 +64,9 @@ jobs:
           --source "selenium")
 
         echo "testmo_run_id=$ID" >> $GITHUB_OUTPUT
+      env:
+        TESTMO_URL: ${{ vars.TESTMO_URL }}
+        TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
 
     - name: Decide which Testmo Run Id to use (as previous step may not have run)
       id: testmo_run_decider
