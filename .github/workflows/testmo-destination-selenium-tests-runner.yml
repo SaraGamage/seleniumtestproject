@@ -80,7 +80,8 @@ jobs:
           echo "actual_run_id=$newlyCreatedRunId" >> $GITHUB_OUTPUT
         fi
 
-        echo "actual_run_id: $actual_run_id"
+        echo "suppliedRunId: ${{ inputs.testmo_run_id }}"
+        echo "newlyCreatedRunId: ${{ steps.testmo_run_create.outputs.testmo_run_id }}"
         
     - name: Test and Reporting
       run: |
@@ -95,7 +96,7 @@ jobs:
           --results ./seleniumtestproject/selenium-test-output.xml \
           -- dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=selenium-test-output.xml"
       env:
-        RUN_ID: ${{ steps.qase_run_decider.outputs.actual_run_id }}
+        RUN_ID: ${{ steps.testmo_run_decider.outputs.actual_run_id }}
         TESTMO_URL: ${{ vars.TESTMO_URL }}
         TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
 
