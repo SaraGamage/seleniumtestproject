@@ -88,7 +88,7 @@ jobs:
 
         npx testmo automation:run:submit-thread \
           --instance "${{ vars.TESTMO_URL }}" \
-          --run-id "${{ steps.testmo_run_decider.outputs.actual_run_id }} \
+          --run-id "${{ steps.testmo_run_decider.outputs.actual_run_id }}" \
           --results ./seleniumtestproject/selenium-test-output.xml \
           -- dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=selenium-test-output.xml"
       env:
