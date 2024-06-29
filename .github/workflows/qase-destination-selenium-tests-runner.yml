@@ -105,7 +105,7 @@ jobs:
             batch: 100
             verbose: true
 
-        - uses: qase-tms/gh-actions/run-complete
+        - uses: qase-tms/gh-actions/run-complete@v1
           id: qase_complete
           with:
             token: ${{ secrets.QASE_API_TOKEN }}
