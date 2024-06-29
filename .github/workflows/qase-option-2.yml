@@ -54,12 +54,12 @@ jobs:
             run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
             echo "run_name=$run_name" >> $GITHUB_OUTPUT
 
-        - uses: qase-tms/gh-actions/run-create
+        - uses: qase-tms/gh-actions/run-create@v1
           id: qase-run-create
           with:
             token: ${{ secrets.QASE_API_TOKEN }}
             project: TM
-            title: ${{ steps.branch_check.outputs.run_name }}
+            title: ${{ steps.test_run_output.outputs.run_name }}
             description: |
               ${{ inputs.env_name }}
               ${{ inputs.release_version }}
@@ -68,13 +68,13 @@ jobs:
             #plan: 321
 
         - uses: qase-tms/gh-actions/report@v1
-          id: report
+          id: qase-report
           with:
             token: ${{ secrets.QASE_API_TOKEN }}
             project: TM
             id: ${{ steps.qase-run-create.outputs.id }}
             format: junit
-            path: ${{ steps.branch_check.outputs.result_xml_path }}
+            path: ${{ steps.test_run_output.outputs.result_xml_path }}
             batch: 100
 
         # - uses: qase-tms/qase-link-run@main
