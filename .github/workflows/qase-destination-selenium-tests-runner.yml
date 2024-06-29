@@ -5,6 +5,11 @@ on:
     types: [trigger-workflow]
   workflow_dispatch:
     inputs:
+      qase_run_id:
+        description: 'If not supplied will create it here' 
+        default: -1
+        required: true
+        type: number
       env_name:
         description: 'Which environment we are running in'
         default: 'Development'
@@ -61,11 +66,13 @@ jobs:
                 echo "qase_env_slug=dev" >> $GITHUB_OUTPUT
             fi 
 
+        # run this if we have the default of `-1` as it was not supplied
         - uses: qase-tms/gh-actions/run-create@v1
-          id: qase-run-create
+          if: ${{ inputs.qase_run_id <= 0 }} 
+          id: qase_run_create
           with:
             token: ${{ secrets.QASE_API_TOKEN }}
-            project: TM
+            project: ${{ vars.QASE_PROJECT_SLUG}}
             title: ${{ steps.test_run_output.outputs.run_name }}
             description: |
               ${{ inputs.env_name }}
@@ -74,13 +81,25 @@ jobs:
             verbose: true
             #milestone: 123
             #plan: 321
+        
+        - name: Decide which Qase Run Id to use (as previous step may not have run)
+          id: qase_run_decider
+          run: |
+            val_one=${{ inputs.qase_run_id }}
+            val_two=${{ steps.qase_run_create.outputs.id }}
+            
+            if (( val_one > val_two )); then
+              echo "actual_run_id=$val_one" >> $GITHUB_OUTPUT
+            else
+              echo "actual_run_id=$val_two" >> $GITHUB_OUTPUT
+            fi
 
         - uses: saragamage/qase-gh-actions/report@main
           id: qase-report
           with:
             token: ${{ secrets.QASE_API_TOKEN }}
-            project: TM
-            id: ${{ steps.qase-run-create.outputs.id }}
+            project: ${{ vars.QASE_PROJECT_SLUG}}
+            id: ${{ steps.qase_run_decider.outputs.actual_run_id }}
             format: junit
             path: ./seleniumtestproject/qase-output.xml
             batch: 100
