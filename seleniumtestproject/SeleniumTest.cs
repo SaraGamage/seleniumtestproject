@@ -134,5 +134,23 @@ namespace SeleniumTestProject
             }
             Assert.That(true);
         }
+
+        [Test, Description("Always passes")]
+        public void Test07()
+        {
+            Assert.That(true);
+        }
+        
+        [Test, Description("Always passes")]
+        public void Test08()
+        {
+            Assert.That(true);
+        }
+
+        [Test, Description("Always passes")]
+        public void Test09()
+        {
+            Assert.That(true);
+        }
     }
 }

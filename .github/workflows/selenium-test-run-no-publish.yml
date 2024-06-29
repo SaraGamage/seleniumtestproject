@@ -1,0 +1,50 @@
+
+name: 🧪 Selenium Project Run ONLY
+
+on:
+  repository_dispatch:
+    types: [trigger-workflow]
+  workflow_dispatch:
+    inputs:
+      env_name:
+        description: 'Which environment we are running in'
+        default: 'Development'
+        required: true
+        type: string
+      release_version:
+        description: '[semver] the build being tested (optional)'
+        default: '0.0.0'
+        required: false
+        type: string
+
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup dotnet8.0.x
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore & Build
+      run: |
+        echo "we are working on ENV (env_name): ${{ inputs.env_name }}"
+        echo "we are working with VER/SHA (release_version): ${{ inputs.release_version }}"
+        
+        dotnet restore
+        dotnet build --no-restore
+
+    - name: Selenium Testing (xml file is output)
+      run: |
+        RUN_NAME=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Github Actions Run')
+
+        ## only tests, nothing else, xml file will be created
+        dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
+

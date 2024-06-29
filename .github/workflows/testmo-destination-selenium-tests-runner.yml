@@ -1,7 +1,5 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: Selenium Project Run & Publish
+name: 💠 testmo [Destination] -- Selenium Project Run & Publish
 
 on:
   repository_dispatch:
@@ -31,21 +29,30 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Setup .NET
+
+    - name: Setup dotnet8.0.x
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test and Reporting
+
+    - name: Restore & Build
       run: |
         echo "we are working on ENV (env_name): ${{ inputs.env_name }}"
         echo "we are working with VER/SHA (release_version): ${{ inputs.release_version }}"
+
+        dotnet restore
+        dotnet build --no-restore
+
+    - name: Test and Reporting
+      run: |
         RUN_NAME=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Github Actions Run')
+
         npm ci 
         npm install --no-save @testmo/testmo-cli
+
+        ## npx is `Run a command from a local or remote npm package`
+        ## call into the testmo node executable, submit a run and the last line is the call to dotnet test (NOTE the space after -- and before `dotnet test`)
+
         npx testmo automation:run:submit \
             --instance "$TESTMO_URL" \
             --project-id 1 \

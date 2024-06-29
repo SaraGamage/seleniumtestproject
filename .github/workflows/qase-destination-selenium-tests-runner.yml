@@ -1,4 +1,4 @@
-name: Qase [Destination] -- Selenium Project Run & Publish
+name: 🅠 Qase [Destination] -- Selenium Project Run & Publish
 
 on:
   repository_dispatch:
@@ -37,21 +37,24 @@ jobs:
 
         - name: Restore & Build
           run: |
-              dotnet restore
-              dotnet build --no-restore
+            echo "we are working on ENV (env_name): ${{ inputs.env_name }}"
+            echo "we are working with VER/SHA (release_version): ${{ inputs.release_version }}"
+
+            dotnet restore
+            dotnet build --no-restore
         
         - name: Run Selenium Tests [dotnet test] with XML output
           id: test_run_output
           run: |
-            echo "we are working on ENV (env_name): ${{ inputs.env_name }}"
-            echo "we are working with VER/SHA (release_version): ${{ inputs.release_version }}"
 
+            ## do the tests to produce the XML output in JUNIT format
             dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=qase-output.xml"
 
+            ## what we're calling the "run" to be sent to Qase as `Title`
             run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
             echo "run_name=$run_name" >> $GITHUB_OUTPUT
             
-            # setup Qase data
+            # setup more Qase data
             if [ "${{ inputs.env_name }}" = "Production" ]; then
                 echo "qase_env_slug=prod" >> $GITHUB_OUTPUT
             else
