@@ -84,7 +84,7 @@ jobs:
             project: TM
             id: ${{ steps.qase-run-create.outputs.id }}
             format: junit
-            path: ${{ steps.test_run_output.outputs.result_xml_path }}
+            path: qase-output.xml
             batch: 100
             verbose: true
 
