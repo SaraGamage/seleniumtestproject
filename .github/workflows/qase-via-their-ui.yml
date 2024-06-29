@@ -45,4 +45,24 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Run Selenium Tests
-        run: dotnet test --no-build --verbosity normal --environment TEST_ENV="Development" --environment TEST_VER="latest-build" --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
+        run: dotnet test --no-build --verbosity normal --environment TEST_ENV="Development" --environment TEST_VER="latest-build" --logger:"junit;LogFilePath=qase-output.xml"
+
+      - uses: saragamage/qase-gh-actions/report@main
+        #if: env.QASE_REPORT
+        id: qase_report
+        with:
+          token: ${{ env.QASE_API_TOKEN }}
+          project: ${{ env.QASE_PROJECT_CODE}}
+          id: ${{ env.QASE_RUN_ID }}
+          format: junit
+          path: ./seleniumtestproject/qase-output.xml
+          batch: 100
+          verbose: true
+
+      - uses: qase-tms/gh-actions/run-complete@v1
+        #if: env.QASE_RUN_COMPLETE
+        id: qase_complete
+        with:
+          token: ${{ env.QASE_API_TOKEN }}
+          project: ${{ env.QASE_PROJECT_CODE}}
+          id: ${{ env.QASE_RUN_ID }}
