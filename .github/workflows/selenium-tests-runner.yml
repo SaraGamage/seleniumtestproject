@@ -13,6 +13,11 @@ on:
         default: 'Development'
         required: true
         type: string
+      release_version:
+        description: '[semver] the build being tested (optional)'
+        default: '0.0.0'
+        required: false
+        type: string
 
   push:
     branches: [ "main" ]
@@ -37,6 +42,7 @@ jobs:
     - name: Test and Reporting
       run: |
         echo "we are working on ENV (env_name): ${{ inputs.env_name }}"
+        echo "we are working with VER/SHA (release_version): ${{ inputs.release_version }}"
         RUN_NAME=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Github Actions Run')
         npm ci 
         npm install --no-save @testmo/testmo-cli
