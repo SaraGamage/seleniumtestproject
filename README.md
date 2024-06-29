@@ -1,8 +1,16 @@
 # seleniumtestproject
 
+3 GAs:
 
-some other change
+# QASE
 
-this is now a change after the merge, but I'm 1 commit behind, because "merge" on main, not in this branch.
-my new change
+[![🅠 Qase [Destination] -- Selenium Project Run & Publish](https://github.com/SaraGamage/seleniumtestproject/actions/workflows/qase-destination-selenium-tests-runner.yml/badge.svg)](https://github.com/SaraGamage/seleniumtestproject/actions/workflows/qase-destination-selenium-tests-runner.yml)
 
+# TESTMO
+
+[![💠 testmo [Destination] -- Selenium Project Run & Publish](https://github.com/SaraGamage/seleniumtestproject/actions/workflows/testmo-destination-selenium-tests-runner.yml/badge.svg)](https://github.com/SaraGamage/seleniumtestproject/actions/workflows/testmo-destination-selenium-tests-runner.yml)
+
+# SELENIUM (ONLY)
+## No publishing
+
+[![🧪 Selenium Project Run ONLY](https://github.com/SaraGamage/seleniumtestproject/actions/workflows/selenium-test-run-no-publish.yml/badge.svg)](https://github.com/SaraGamage/seleniumtestproject/actions/workflows/selenium-test-run-no-publish.yml)
