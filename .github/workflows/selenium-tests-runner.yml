@@ -56,3 +56,4 @@ jobs:
       env:
         TESTMO_URL: ${{ vars.TESTMO_URL }}
         TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
+
