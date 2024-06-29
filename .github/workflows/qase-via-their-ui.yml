@@ -18,9 +18,6 @@ on:
       qase_run_complete:
         description: 'Complete Qase Run'
         required: true
-      environment:
-        description: 'Which environment? [Production|Development]'
-        required: true
 
 env:
   QASE_API_BASE_URL: ${{ inputs.qase_api_base_url }}
@@ -48,4 +45,4 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Run Selenium Tests
-        run: dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.environment }}" --environment TEST_VER="latest-build" --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
+        run: dotnet test --no-build --verbosity normal --environment TEST_ENV="Development" --environment TEST_VER="latest-build" --logger:"junit;LogFilePath=ga-selenium-test-output.xml"
