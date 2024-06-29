@@ -104,3 +104,10 @@ jobs:
             path: ./seleniumtestproject/qase-output.xml
             batch: 100
             verbose: true
+
+        - uses: qase-tms/gh-actions/run-complete
+          id: qase_complete
+          with:
+            token: ${{ secrets.QASE_API_TOKEN }}
+            project: ${{ vars.QASE_PROJECT_SLUG}}
+            id: ${{ steps.qase_run_decider.outputs.actual_run_id }}
