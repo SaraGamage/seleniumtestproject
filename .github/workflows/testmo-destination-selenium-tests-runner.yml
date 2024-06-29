@@ -79,22 +79,29 @@ jobs:
         else
           echo "actual_run_id=$newlyCreatedRunId" >> $GITHUB_OUTPUT
         fi
-
-        echo "suppliedRunId: ${{ inputs.testmo_run_id }}"
-        echo "newlyCreatedRunId: ${{ steps.testmo_run_create.outputs.testmo_run_id }}"
         
-    - name: Test and Reporting
+    - name: 💠 Selenium Test Run and 📤 testmo Publish 
       run: |
 
         ## npx is `Run a command from a local or remote npm package`
         ## call into the testmo node executable, submit a run and the last line is the call to dotnet test (NOTE the space after -- and before `dotnet test`)
-        echo "id: $RUN_ID"
 
         npx testmo automation:run:submit-thread \
           --instance "$TESTMO_URL" \
           --run-id "$RUN_ID" \
           --results ./seleniumtestproject/selenium-test-output.xml \
           -- dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=selenium-test-output.xml"
+      env:
+        RUN_ID: ${{ steps.testmo_run_decider.outputs.actual_run_id }}
+        TESTMO_URL: ${{ vars.TESTMO_URL }}
+        TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
+      
+    - name: 💠 testmo run complete 
+      run: |
+        npx testmo automation:run:complete \
+          --instance "$TESTMO_URL" \
+          --run-id "$RUN_ID" \
+          --no-measure-elapsed
       env:
         RUN_ID: ${{ steps.testmo_run_decider.outputs.actual_run_id }}
         TESTMO_URL: ${{ vars.TESTMO_URL }}
