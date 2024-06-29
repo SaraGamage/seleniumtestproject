@@ -1,4 +1,5 @@
 
+using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using WebDriverManager;
@@ -13,6 +14,23 @@ namespace SeleniumTestProject
         private IWebDriver driver;
         public IDictionary<string, object> vars { get; private set; }
         private IJavaScriptExecutor js;
+
+        private string TestingEnvironment = "Development?";
+        private string TestingVersionOrCommit = "Unknown";
+        private bool IsProduction = false;
+        
+        [OneTimeSetUp]
+        public void RunBeforeAnyTests()
+        {
+            TestingEnvironment = Environment.GetEnvironmentVariable("TEST_ENV");
+            TestingVersionOrCommit = Environment.GetEnvironmentVariable("TEST_VER");
+            Console.WriteLine($"-----------------------------------------------");
+            Console.WriteLine($"TestingEnvironment {TestingEnvironment}");
+            Console.WriteLine($"TestingVersionOrCommit {TestingVersionOrCommit}");
+            Console.WriteLine($"-----------------------------------------------");
+            IsProduction = TestingEnvironment.Equals("Production", StringComparison.CurrentCultureIgnoreCase);
+        }
+
         [SetUp]
         public void SetUp()
         {
@@ -26,6 +44,7 @@ namespace SeleniumTestProject
             js = (IJavaScriptExecutor)driver;
             vars = new Dictionary<string, object>();
         }
+
         [TearDown]
         protected void TearDown() => driver?.Quit();
 
@@ -101,10 +120,18 @@ namespace SeleniumTestProject
             Assert.That(true);
         }
 
-        [Test, Description("Slow test")]
-        public void SlowTest()
+        [Test, Description("A very specific test that needs to do 1 thing in dev, another in prod")]
+        public void TwoSecondTestOnDevHalfSecondOnProd()
         {
-            Thread.Sleep(22);
+            if(IsProduction)
+            {
+                Console.WriteLine($"If Prod then we're going to not sleep as long");
+                Thread.Sleep(500);
+            }
+            else
+            {
+                Thread.Sleep(2000);
+            }
             Assert.That(true);
         }
     }
