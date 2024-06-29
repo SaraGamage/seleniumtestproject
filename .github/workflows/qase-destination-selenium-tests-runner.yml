@@ -95,7 +95,7 @@ jobs:
             fi
 
         - uses: saragamage/qase-gh-actions/report@main
-          id: qase-report
+          id: qase_report
           with:
             token: ${{ secrets.QASE_API_TOKEN }}
             project: ${{ vars.QASE_PROJECT_SLUG}}
