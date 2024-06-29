@@ -13,9 +13,20 @@ namespace SeleniumTestProject
         private IWebDriver driver;
         public IDictionary<string, object> vars { get; private set; }
         private IJavaScriptExecutor js;
+
+        private string TestingEnvironment = "Development?";
+        private string TestingVersionOrCommit = "Unknown";
+
         [SetUp]
         public void SetUp()
         {
+            TestingEnvironment = Environment.GetEnvironmentVariable("TEST_ENV");
+            TestingVersionOrCommit = Environment.GetEnvironmentVariable("TEST_VER");
+            Console.WriteLine($"-----------------------------------------------");
+            Console.WriteLine($"TestingEnvironment {TestingEnvironment}");
+            Console.WriteLine($"TestingVersionOrCommit {TestingVersionOrCommit}");
+            Console.WriteLine($"-----------------------------------------------");
+
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArguments("--headless");
             chromeOptions.AddArguments("--verbose"); 
@@ -26,6 +37,7 @@ namespace SeleniumTestProject
             js = (IJavaScriptExecutor)driver;
             vars = new Dictionary<string, object>();
         }
+
         [TearDown]
         protected void TearDown() => driver?.Quit();
 
