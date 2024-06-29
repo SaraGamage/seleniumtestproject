@@ -1,0 +1,88 @@
+name: Qase [Destination] -- Selenium Project Run & Publish
+
+on:
+  repository_dispatch:
+    types: [trigger-workflow]
+  workflow_dispatch:
+    inputs:
+      env_name:
+        description: 'Which environment we are running in'
+        default: 'Development'
+        required: true
+        type: string
+      release_version:
+        description: '[semver] the build being tested (optional)'
+        default: '0.0.0'
+        required: false
+        type: string
+
+  push:
+    branches: [ "main", "sg/qase" ]
+  pull_request:
+    branches: [ "main", "sg/qase" ]
+
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      strategy:
+        matrix:
+          node-version: [20.x]
+      steps:
+        - uses: actions/checkout@v4
+
+        - name: Setup dotnet8.0.x
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: 8.0.x
+
+        - name: Restore & Build
+          run: |
+              dotnet restore
+              dotnet build --no-restore
+        
+        - name: Run Selenium Tests [dotnet test] with XML output
+          id: test_run_output
+          run: |
+            echo "we are working on ENV (env_name): ${{ inputs.env_name }}"
+            echo "we are working with VER/SHA (release_version): ${{ inputs.release_version }}"
+
+            dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=qase-output.xml"
+
+            run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
+            echo "run_name=$run_name" >> $GITHUB_OUTPUT
+            
+            # setup Qase data
+            if [ "${{ inputs.env_name }}" = "Production" ]; then
+                echo "qase_env_slug=prod" >> $GITHUB_OUTPUT
+            else
+                echo "qase_env_slug=dev" >> $GITHUB_OUTPUT
+            fi 
+
+        - uses: qase-tms/gh-actions/run-create@v1
+          id: qase-run-create
+          with:
+            token: ${{ secrets.QASE_API_TOKEN }}
+            project: TM
+            title: ${{ steps.test_run_output.outputs.run_name }}
+            description: |
+              ${{ inputs.env_name }}
+              ${{ inputs.release_version }}
+            environment: ${{ steps.test_run_output.outputs.qase_env_slug }}
+            verbose: true
+            #milestone: 123
+            #plan: 321
+
+        - uses: saragamage/qase-gh-actions/report@main
+          id: qase-report
+          with:
+            token: ${{ secrets.QASE_API_TOKEN }}
+            project: TM
+            id: ${{ steps.qase-run-create.outputs.id }}
+            format: junit
+            path: ./seleniumtestproject/qase-output.xml
+            batch: 100
+            verbose: true
+
+        # - uses: qase-tms/qase-link-run@v1
+        #   env:
+        #     QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
