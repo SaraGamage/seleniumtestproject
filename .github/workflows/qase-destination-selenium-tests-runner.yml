@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       qase_run_id:
-        description: 'If not supplied will create it here' 
+        description: 'qase_run_id (will be supplied from calling repo) If not supplied will be created' 
         default: -1
         required: true
         type: number
@@ -66,7 +66,7 @@ jobs:
                 echo "qase_env_slug=dev" >> $GITHUB_OUTPUT
             fi 
 
-        # run this if we have the default of `-1` as it was not supplied
+        # run this if we have the default of `-1` as it was not supplied by the calling repo
         - uses: qase-tms/gh-actions/run-create@v1
           if: ${{ inputs.qase_run_id <= 0 }} 
           id: qase_run_create
