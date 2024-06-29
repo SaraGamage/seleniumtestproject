@@ -57,7 +57,10 @@ jobs:
 
             ## what we're calling the "run" to be sent to Qase as `Title`
             run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
-            echo "run_name=$run_name (${{ inputs.release_version }})" >> $GITHUB_OUTPUT
+            if [ "${{ inputs.release_version }}" ]
+              suffix=$" ({{ inputs.release_version }})"
+            fi
+            echo "run_name=$run_name$suffix" >> $GITHUB_OUTPUT
             
             # setup more Qase data
             if [ "${{ inputs.env_name }}" = "Production" ]; then
