@@ -86,6 +86,13 @@ jobs:
         ## npx is `Run a command from a local or remote npm package`
         ## call into the testmo node executable, submit a run and the last line is the call to dotnet test (NOTE the space after -- and before `dotnet test`)
 
+        # [idea to make my own gh-action to wrap testmo]
+        # -uses: /sg/testmo-add-test-restults-to-run@v1
+        # with: 
+            # format: junit
+            # path: ./seleniumtestproject/selenium-test-output.xml
+            # dotnet test
+
         npx testmo automation:run:submit-thread \
           --instance "$TESTMO_URL" \
           --run-id "$RUN_ID" \
