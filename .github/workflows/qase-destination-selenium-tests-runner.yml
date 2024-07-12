@@ -1,4 +1,4 @@
-name: 🅠 Qase [Destination] -- Selenium Project Run & Publish
+name: 🅠 Qase Destination Selenium Project Run & Publish
 
 on:
   repository_dispatch:
