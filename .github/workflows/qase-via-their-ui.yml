@@ -53,7 +53,7 @@ jobs:
       - name: Run Selenium Tests
         run: dotnet test --no-build --verbosity normal --environment TEST_ENV="Development" --environment TEST_VER="latest-build" --logger:"junit;LogFilePath=qase-output.xml"
         #org/repo/action/branch
-      - uses: qase-tms/qase-gh-actions/report@v1
+      - uses: qase-tms/gh-actions/report@v1
         #if: env.QASE_REPORT
         id: qase_report
         with:
