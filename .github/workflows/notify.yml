@@ -1,0 +1,13 @@
+
+name: CI notify
+on:
+  workflow_run:
+    workflows: ["🅠 Qase [Destination] -- Selenium Project Run & Publish"]
+    types: 
+      - completed
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+     - name: echo
+       run: echo "CI notify ran"
