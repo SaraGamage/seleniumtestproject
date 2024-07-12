@@ -2,7 +2,7 @@
 name: cascade
 on:
   workflow_run:
-    workflows: ['qase-destination-selenium-tests-runner']
+    workflows: ['Selenium Project Run ONLY']
     types: 
       - completed
 jobs:
