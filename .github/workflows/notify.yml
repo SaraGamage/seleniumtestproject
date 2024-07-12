@@ -1,12 +1,12 @@
 
-name: CI notify
+name: cascade
 on:
   workflow_run:
-    workflows: ["qase-destination-selenium-tests-runner"]
+    workflows: ['qase-destination-selenium-tests-runner']
     types: 
       - completed
 jobs:
-  notify:
+  build:
     runs-on: ubuntu-latest
     steps:
      - name: echo test
