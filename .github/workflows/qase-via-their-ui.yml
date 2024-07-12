@@ -1,4 +1,4 @@
-name: 🅠 Qase Calls Github Action -- Selenium Project Run
+name: 🅠 Qase Calls Github Action Selenium Project Run
 
 on:
   workflow_dispatch:
