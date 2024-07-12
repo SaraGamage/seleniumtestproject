@@ -1,8 +1,7 @@
-
 name: cascade
 on:
   workflow_run:
-    workflows: ['🧪 Selenium Project Run ONLY']
+    workflows: ['🅠 Qase [Destination] -- Selenium Project Run & Publish']
     types: 
       - completed
 jobs:
