@@ -22,8 +22,13 @@ on:
         type: string
 
   push:
+    paths-ignore:
+      - '.github/workflows/qase-via-their-ui.yml'
     branches: [ "main" ]
+      
   pull_request:
+    paths-ignore:
+      - '.github/workflows/qase-via-their-ui.yml'
     branches: [ "main" ]
 
 jobs:
