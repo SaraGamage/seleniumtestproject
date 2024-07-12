@@ -2,7 +2,7 @@
 name: cascade
 on:
   workflow_run:
-    workflows: ['Selenium Project Run ONLY']
+    workflows: ['🧪 Selenium Project Run ONLY']
     types: 
       - completed
 jobs:
