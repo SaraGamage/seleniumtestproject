@@ -85,6 +85,7 @@ jobs:
         fi
         
     - name: 💠 Selenium Test Run and 📤 testmo Publish 
+      continue-on-error: true #using this because dotnet test returns 1 on test failures, to ensure run complete executes
       run: |
 
         ## npx is `Run a command from a local or remote npm package`
