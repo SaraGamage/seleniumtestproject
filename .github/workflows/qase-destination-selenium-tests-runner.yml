@@ -73,6 +73,7 @@ jobs:
                 echo "qase_env_slug=dev" >> $GITHUB_OUTPUT
             fi 
 
+            ## important: needs to be last thing in the step, if there are failing tests, it will stop executing rest of step as `dotnet test` does a `return 1` (error exit code)
             ## do the tests to produce the XML output in JUNIT format
             dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=qase-output.xml"
 
