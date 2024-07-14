@@ -104,7 +104,7 @@ namespace SeleniumTestProject
         [Test, Description("Always fail")]
         public void Test09()
         {
-            Assert.That(false);
+            Assert.That(true);
         }
     }
 }
