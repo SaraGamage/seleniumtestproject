@@ -67,18 +67,7 @@ jobs:
           --project-id 1 \
           --source "ga-with-retries" \
           --results ./seleniumtestproject/selenium-test-output.xml \
-          --  attempt=0 \
-              max_attempts=7 \
-              until [ $attempt -ge $max_attempts ]  \
-              do  \
-                dotnet test --no-build --filter TestCategory=\"IncludeFailures\" --logger:"junit;LogFilePath=test-output.xml" && break  \
-                attempt=$((attempt+1))  \
-                echo "🟡 Retrying dotnet test... Attempt $attempt/$max_attempts"  \
-              done \
-              if [ $attempt -eq $max_attempts ]; then \
-                echo "💥Tests failed after $max_attempts attempts." \
-                exit 1 \
-              fi \
+          -- node retry-tests.js
       env:
         RUN_ID: ${{ steps.testmo_run_decider.outputs.actual_run_id }}
         TESTMO_URL: ${{ vars.TESTMO_URL }}
