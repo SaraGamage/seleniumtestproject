@@ -59,6 +59,7 @@ jobs:
       run: |
 
         echo "🟢 Starting..."
+        run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
 
         function dotnet_test_with_retry() {
           local attempt=0
@@ -88,8 +89,9 @@ jobs:
 
         npx testmo automation:run:submit \
           --instance "$TESTMO_URL" \
+          --name "$run_name" \
           --project-id 1 \
-          --source "ga-with-retries"
+          --source "ga-with-retries" \
           --results ./seleniumtestproject/selenium-test-output.xml \
           -- dotnet_test_with_retry
       env:
