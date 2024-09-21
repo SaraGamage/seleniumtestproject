@@ -9,6 +9,7 @@ using WebDriverManager.DriverConfigs.Impl;
 namespace SeleniumTestProject
 {
     [TestFixture]
+    [Category("ExcludeFailures")]
     public class SeleniumTest
     {
         private IWebDriver driver;
@@ -103,6 +104,31 @@ namespace SeleniumTestProject
 
         [Test, Description("Always fail")]
         public void Test09()
+        {
+            Assert.That(true);
+        }
+
+    }
+
+    [Category("IncludeFailures")]
+    [TestFixture]
+    public class FailingTests
+    {
+
+        [Test]
+        public void FailureOne()
+        {
+            Assert.That(false);
+       }
+
+        [Test]
+        public void FailureTwo()
+        {
+            Assert.That(false);
+       }
+
+        [Test]
+        public void GoodOne()
         {
             Assert.That(true);
         }
