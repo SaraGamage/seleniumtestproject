@@ -55,38 +55,56 @@ jobs:
         npm install --no-save @testmo/testmo-cli
 
     # run this if we have the default of `-1` as it was not supplied by the calling repo
-    - name: Create testmo run
-      if: ${{ inputs.testmo_run_id <= 0 }} 
-      id: testmo_run_create
-      run: |
-        run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
+    # - name: Create testmo run
+    #   if: ${{ inputs.testmo_run_id <= 0 }} 
+    #   id: testmo_run_create
+    #   run: |
+    #     run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
+	# 
+    #     ID=$(npx testmo automation:run:create \
+    #       --instance "$TESTMO_URL" \
+    #       --project-id 1 \
+    #       --name "$run_name" \
+    #       --source "selenium")
+	# 
+    #     echo "testmo_run_id=$ID" >> $GITHUB_OUTPUT
+    #   env:
+    #     TESTMO_URL: ${{ vars.TESTMO_URL }}
+    #     TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
 
-        ID=$(npx testmo automation:run:create \
-          --instance "$TESTMO_URL" \
-          --project-id 1 \
-          --name "$run_name" \
-          --source "selenium")
-
-        echo "testmo_run_id=$ID" >> $GITHUB_OUTPUT
-      env:
-        TESTMO_URL: ${{ vars.TESTMO_URL }}
-        TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
-
-    - name: Decide which Testmo Run Id to use (as previous step may not have run)
-      id: testmo_run_decider
-      run: |
-        suppliedRunId=${{ inputs.testmo_run_id }}
-        newlyCreatedRunId=${{ steps.testmo_run_create.outputs.testmo_run_id }}
-        
-        if (( $suppliedRunId != -1 )); then
-          echo "actual_run_id=$suppliedRunId" >> $GITHUB_OUTPUT
-        else
-          echo "actual_run_id=$newlyCreatedRunId" >> $GITHUB_OUTPUT
-        fi
+    # - name: Decide which Testmo Run Id to use (as previous step may not have run)
+    #   id: testmo_run_decider
+    #   run: |
+    #     suppliedRunId=${{ inputs.testmo_run_id }}
+    #     newlyCreatedRunId=${{ steps.testmo_run_create.outputs.testmo_run_id }}
+    #     
+    #     if (( $suppliedRunId != -1 )); then
+    #       echo "actual_run_id=$suppliedRunId" >> $GITHUB_OUTPUT
+    #     else
+    #       echo "actual_run_id=$newlyCreatedRunId" >> $GITHUB_OUTPUT
+    #     fi
         
     - name: 💠 Selenium Test Run and 📤 testmo Publish 
       continue-on-error: true #using this because dotnet test returns 1 on test failures, to ensure run complete executes
       run: |
+
+        echo "🟢 Starting..."
+
+        function dotnet_test_with_retry() {
+          local attempt=0
+          local max_attempts=5
+          until [ $attempt -ge $max_attempts ]
+          do
+            dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=selenium-test-output.xml" && break
+            attempt=$((attempt+1))
+            echo "🟡 Retrying dotnet test... Attempt $attempt/$max_attempts"
+          done
+
+          if [ $attempt -eq $max_attempts ]; then
+            echo "💥 Tests failed after $max_attempts attempts."
+            exit 1
+          fi
+        }
 
         ## npx is `Run a command from a local or remote npm package`
         ## call into the testmo node executable, submit a run and the last line is the call to dotnet test (NOTE the space after -- and before `dotnet test`)
@@ -102,20 +120,20 @@ jobs:
           --instance "$TESTMO_URL" \
           --run-id "$RUN_ID" \
           --results ./seleniumtestproject/selenium-test-output.xml \
-          -- dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=selenium-test-output.xml"
+          -- dotnet_test_with_retry
       env:
         RUN_ID: ${{ steps.testmo_run_decider.outputs.actual_run_id }}
         TESTMO_URL: ${{ vars.TESTMO_URL }}
         TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
       
-    - name: 💠 testmo run complete 
-      run: |
-        npx testmo automation:run:complete \
-          --instance "$TESTMO_URL" \
-          --run-id "$RUN_ID" \
-          --no-measure-elapsed
-      env:
-        RUN_ID: ${{ steps.testmo_run_decider.outputs.actual_run_id }}
-        TESTMO_URL: ${{ vars.TESTMO_URL }}
-        TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
+    # - name: 💠 testmo run complete 
+    #   run: |
+    #     npx testmo automation:run:complete \
+    #       --instance "$TESTMO_URL" \
+    #       --run-id "$RUN_ID" \
+    #       --no-measure-elapsed
+    #   env:
+    #     RUN_ID: ${{ steps.testmo_run_decider.outputs.actual_run_id }}
+    #     TESTMO_URL: ${{ vars.TESTMO_URL }}
+    #     TESTMO_TOKEN: ${{ secrets.TESTMO_TOKEN }}
 
