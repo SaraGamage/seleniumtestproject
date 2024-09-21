@@ -67,7 +67,7 @@ jobs:
 
           exec('dotnet test --no-build --filter TestCategory="ExcludeFailures" --logger:"junit;LogFilePath=selenium-test-output.xml"', (error, stdout, stderr) => {
             if (!error) {
-              console.log('Tests passed successfully.');
+              console.log('✅ Tests passed successfully.');
               process.exit(0);
             }
 
