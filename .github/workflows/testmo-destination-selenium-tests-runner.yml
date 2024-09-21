@@ -65,7 +65,7 @@ jobs:
         function runTestsWithRetry(attempt = 0, maxAttempts = 5) {
           console.log(`🟡 Running test attempt ${attempt + 1}/${maxAttempts}`);
 
-          exec('dotnet test --no-build --filter TestCategory="IncludeFailures" --logger:"junit;LogFilePath=test-output.xml"', (error, stdout, stderr) => {
+          exec('dotnet test --no-build --filter TestCategory="IncludeFailures" --logger:"junit;LogFilePath=selenium-test-output.xml"', (error, stdout, stderr) => {
             if (!error) {
               console.log('Tests passed successfully.');
               process.exit(0);
