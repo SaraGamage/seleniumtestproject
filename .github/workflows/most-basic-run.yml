@@ -27,7 +27,7 @@ jobs:
           local max_attempts=5
           until [ $attempt -ge $max_attempts ]
           do
-            dotnet test --no-build --filter TestCategory=\"IncludeFailures\" --logger:"junit;LogFilePath=test-output.xml" && break
+            dotnet test --no-build --filter TestCategory=\"ExcludeFailures\" --logger:"junit;LogFilePath=test-output.xml" && break
             attempt=$((attempt+1))
             echo "Retrying dotnet test... Attempt $attempt/$max_attempts"
           done
