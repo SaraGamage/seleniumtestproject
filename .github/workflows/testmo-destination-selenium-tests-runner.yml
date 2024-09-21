@@ -61,39 +61,24 @@ jobs:
         echo "🟢 Starting..."
         run_name=$(TZ=':Australia/Melbourne' date '+%Y%m%d-%H:%M-Selenium-Tests')
 
-        function dotnet_test_with_retry() {
-          local attempt=0
-          local max_attempts=10
-          until [ $attempt -ge $max_attempts ]
-          do
-            dotnet test --no-build --filter TestCategory=\"IncludeFailures\" --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=selenium-test-output.xml" && break
-            attempt=$((attempt+1))
-            echo "🟡 Retrying dotnet test... Attempt $attempt/$max_attempts"
-          done
-
-          if [ $attempt -eq $max_attempts ]; then
-            echo "💥 Tests failed after $max_attempts attempts."
-            exit 1
-          fi
-        }
-
-        ## npx is `Run a command from a local or remote npm package`
-        ## call into the testmo node executable, submit a run and the last line is the call to dotnet test (NOTE the space after -- and before `dotnet test`)
-
-        # [idea to make my own gh-action to wrap testmo]
-        # -uses: /sg/testmo-add-test-restults-to-run@v1
-        # with: 
-            # format: junit
-            # path: ./seleniumtestproject/selenium-test-output.xml
-            # dotnet test
-
         npx testmo automation:run:submit \
           --instance "$TESTMO_URL" \
           --name "$run_name" \
           --project-id 1 \
           --source "ga-with-retries" \
           --results ./seleniumtestproject/selenium-test-output.xml \
-          -- dotnet_test_with_retry
+          --  attempt=0 \
+              max_attempts=7 \
+              until [ $attempt -ge $max_attempts ]  \
+              do  \
+                dotnet test --no-build --filter TestCategory=\"IncludeFailures\" --logger:"junit;LogFilePath=test-output.xml" && break  \
+                attempt=$((attempt+1))  \
+                echo "🟡 Retrying dotnet test... Attempt $attempt/$max_attempts"  \
+              done \
+              if [ $attempt -eq $max_attempts ]; then \
+                echo "💥Tests failed after $max_attempts attempts." \
+                exit 1 \
+              fi \
       env:
         RUN_ID: ${{ steps.testmo_run_decider.outputs.actual_run_id }}
         TESTMO_URL: ${{ vars.TESTMO_URL }}
