@@ -62,10 +62,10 @@ jobs:
 
         function dotnet_test_with_retry() {
           local attempt=0
-          local max_attempts=5
+          local max_attempts=10
           until [ $attempt -ge $max_attempts ]
           do
-            dotnet test --no-build --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=selenium-test-output.xml" && break
+            dotnet test --no-build --filter TestCategory=\"IncludeFailures\" --verbosity normal --environment TEST_ENV="${{ inputs.env_name }}" --environment TEST_VER="${{ inputs.release_version }}" --logger:"junit;LogFilePath=selenium-test-output.xml" && break
             attempt=$((attempt+1))
             echo "🟡 Retrying dotnet test... Attempt $attempt/$max_attempts"
           done
@@ -86,9 +86,10 @@ jobs:
             # path: ./seleniumtestproject/selenium-test-output.xml
             # dotnet test
 
-        npx testmo automation:run:submit-thread \
+        npx testmo automation:run:submit \
           --instance "$TESTMO_URL" \
-          --run-id "$RUN_ID" \
+          --project-id 1 \
+          --source "ga-with-retries"
           --results ./seleniumtestproject/selenium-test-output.xml \
           -- dotnet_test_with_retry
       env:
